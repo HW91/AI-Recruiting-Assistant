@@ -14,7 +14,6 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
-            min-height: 100vh;
             overflow-x: hidden;
         }
         
@@ -27,7 +26,6 @@
         .intro-section {
             text-align: left;
             color: #333;
-            margin-bottom: 0;
         }
         
         .intro-section h1 {
@@ -56,12 +54,9 @@
         
         .widget-area {
             margin-top: 20px; /* Exactly 20px below tips */
-            margin-bottom: 40px;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            position: relative;
-            min-height: 184px; /* Button height + padding */
+            padding: 40px 20px;
+            text-align: center;
+            min-height: 200px;
         }
         
         /* Status messages */
@@ -80,60 +75,15 @@
             text-align: center;
         }
 
-        /* VAPI button styling - NO vertical centering */
+        /* Let VAPI button render normally, just center it in the widget-area */
         .vapi-btn {
-            transition: all 0.3s ease !important;
-            box-shadow: 0 4px 20px rgba(52, 73, 94, 0.3) !important;
-            /* Position at top of widget-area, horizontally centered */
-            position: absolute !important;
-            top: 20px !important;
-            left: 50% !important;
-            transform: translateX(-50%) !important;
-            right: auto !important;
-            bottom: auto !important;
-            /* Ensure perfect circle */
-            border-radius: 50% !important;
-            aspect-ratio: 1 / 1 !important;
-            min-width: 0 !important;
-            min-height: 0 !important;
-            max-width: none !important;
-            max-height: none !important;
-            flex-shrink: 0 !important;
-        }
-
-        .vapi-btn-is-idle {
-            animation: gentle-pulse 2s infinite ease-in-out !important;
-        }
-
-        .vapi-btn-is-active {
-            animation: active-pulse 1.5s infinite ease-in-out !important;
-        }
-
-        @keyframes gentle-pulse {
-            0% { 
-                box-shadow: 0 4px 20px rgba(52, 73, 94, 0.3) !important;
-                transform: translateX(-50%) scale(1) !important;
-            }
-            50% { 
-                box-shadow: 0 8px 30px rgba(52, 73, 94, 0.5) !important;
-                transform: translateX(-50%) scale(1.05) !important;
-            }
-            100% { 
-                box-shadow: 0 4px 20px rgba(52, 73, 94, 0.3) !important;
-                transform: translateX(-50%) scale(1) !important;
-            }
-        }
-
-        @keyframes active-pulse {
-            0%, 100% { 
-                box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4) !important;
-            }
-            50% { 
-                box-shadow: 0 12px 35px rgba(231, 76, 60, 0.7) !important;
-            }
+            /* Remove aggressive positioning overrides */
+            position: relative !important;
+            display: inline-block !important;
+            margin: 0 auto !important;
         }
         
-        /* Tablet styles */
+        /* Responsive design */
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
@@ -141,34 +91,19 @@
             
             .intro-section h1 {
                 font-size: 24px;
-                margin-bottom: 15px;
             }
             
             .intro-section p {
                 font-size: 15px;
-                margin-bottom: 12px;
-            }
-
-            .tips {
-                font-size: 13px;
-                padding: 10px;
             }
 
             .widget-area {
                 margin-top: 20px;
-                margin-bottom: 30px;
-                padding: 15px;
-                min-height: 150px; /* 120px button + 30px padding */
-            }
-
-            .vapi-btn {
-                width: 120px !important;
-                height: 120px !important;
-                top: 15px !important;
+                padding: 30px 15px;
+                min-height: 180px;
             }
         }
 
-        /* Mobile styles */
         @media (max-width: 480px) {
             .container {
                 padding: 12px;
@@ -176,34 +111,24 @@
 
             .intro-section h1 {
                 font-size: 22px;
-                margin-bottom: 12px;
             }
             
             .intro-section p {
                 font-size: 14px;
-                margin-bottom: 10px;
             }
             
             .tips {
-                padding: 8px;
-                font-size: 12px;
+                padding: 10px;
+                font-size: 13px;
             }
 
             .widget-area {
                 margin-top: 20px;
-                margin-bottom: 25px;
-                padding: 10px;
-                min-height: 120px; /* 100px button + 20px padding */
-            }
-
-            .vapi-btn {
-                width: 100px !important;
-                height: 100px !important;
-                top: 10px !important;
+                padding: 25px 10px;
+                min-height: 160px;
             }
         }
 
-        /* Very small screens */
         @media (max-width: 320px) {
             .intro-section h1 {
                 font-size: 20px;
@@ -215,53 +140,8 @@
 
             .widget-area {
                 margin-top: 20px;
-                margin-bottom: 20px;
-                padding: 8px;
-                min-height: 106px; /* 90px button + 16px padding */
-            }
-
-            .vapi-btn {
-                width: 90px !important;
-                height: 90px !important;
-                top: 8px !important;
-            }
-        }
-
-        /* Landscape mobile - very short screens */
-        @media (max-height: 500px) and (orientation: landscape) {
-            .intro-section h1 {
-                font-size: 18px;
-                margin-bottom: 8px;
-            }
-            
-            .intro-section p {
-                font-size: 12px;
-                margin-bottom: 6px;
-            }
-
-            .tips {
-                padding: 6px;
-                font-size: 11px;
-            }
-
-            .widget-area {
-                margin-top: 15px;
-                margin-bottom: 15px;
-                padding: 5px;
-                min-height: 90px; /* 80px button + 10px padding */
-            }
-
-            .vapi-btn {
-                width: 80px !important;
-                height: 80px !important;
-                top: 5px !important;
-            }
-        }
-
-        /* Ensure adequate spacing on very tall screens */
-        @media (min-height: 800px) {
-            .widget-area {
-                margin-bottom: 60px;
+                padding: 20px 8px;
+                min-height: 140px;
             }
         }
     </style>
@@ -286,7 +166,7 @@
         </div>
         
         <div class="widget-area">
-            <!-- Widget will appear here -->
+            <!-- VAPI widget will render here naturally -->
         </div>
     </div>
     
@@ -297,34 +177,30 @@
         const assistant = "35c7f5f0-a44c-4172-85da-1c05cc5e55e7"; // Your assistant ID
         const apiKey = "1f80cbcd-97fc-45ad-ba54-5eff014c5f4e"; // Your public key
         
-        // THIS IS THE KEY - Use buttonConfig for proper styling
         const buttonConfig = {
-            position: "bottom-right", // Will be repositioned with CSS
-            offset: "20px",
+            position: "bottom-right", // VAPI will handle positioning
+            offset: "40px",
             width: "144px",
             height: "144px",
             
-            // Idle state (when not connected)
             idle: {
-                color: "#34495e", // Your desired color
-                type: "round", // round button
+                color: "#34495e",
+                type: "round",
                 title: "Click to talk",
                 subtitle: "Start your interview",
                 icon: "https://unpkg.com/lucide-static@0.321.0/icons/mic.svg"
             },
             
-            // Loading state (connecting)
             loading: {
-                color: "#f39c12", // Orange for connecting
+                color: "#f39c12",
                 type: "round",
                 title: "Connecting...",
                 subtitle: "Please wait",
                 icon: "https://unpkg.com/lucide-static@0.321.0/icons/loader-2.svg"
             },
             
-            // Active state (call in progress)
             active: {
-                color: "#e74c3c", // Red for active call
+                color: "#e74c3c",
                 type: "round",
                 title: "End Interview",
                 subtitle: "Click to stop",
@@ -353,16 +229,15 @@
             
             g.onload = function () {
                 vapiInstance = window.vapiSDK.run({
-                    apiKey: apiKey, // mandatory
-                    assistant: assistant, // mandatory
-                    config: buttonConfig // This is where the magic happens!
+                    apiKey: apiKey,
+                    assistant: assistant,
+                    config: buttonConfig
                 });
                 
                 if (vapiInstance) {
                     showStatus('Interview widget ready!', 2000);
-                    console.log('✅ VAPI widget loaded with custom styling');
+                    console.log('✅ VAPI widget loaded');
                     
-                    // Optional: Listen to events
                     vapiInstance.on('call-start', () => {
                         showStatus('Interview started - speak clearly!');
                         console.log('Call started');
