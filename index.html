@@ -60,12 +60,22 @@
         }
         
         .widget-area {
-            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 300px;
+            min-height: 200px;
+            margin-top: 40px;
+            margin-bottom: 60px;
             position: relative;
+        }
+        
+        /* Ensure adequate spacing on mobile */
+        @media (max-height: 600px) {
+            .widget-area {
+                margin-top: 20px;
+                margin-bottom: 40px;
+                min-height: 150px;
+            }
         }
         
         /* Status messages */
@@ -88,6 +98,13 @@
         .vapi-btn {
             transition: all 0.3s ease !important;
             box-shadow: 0 4px 20px rgba(52, 73, 94, 0.3) !important;
+            /* Override VAPI positioning to center in widget-area */
+            position: absolute !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            right: auto !important;
+            bottom: auto !important;
         }
 
         .vapi-btn-is-idle {
@@ -135,6 +152,59 @@
             .intro-section p {
                 font-size: 16px;
             }
+
+            .widget-area {
+                margin-top: 30px;
+                margin-bottom: 40px;
+                min-height: 120px;
+            }
+
+            /* Smaller button on mobile */
+            .vapi-btn {
+                width: 120px !important;
+                height: 120px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .intro-section h1 {
+                font-size: 24px;
+            }
+            
+            .tips {
+                padding: 12px;
+                font-size: 14px;
+            }
+
+            .widget-area {
+                margin-top: 20px;
+                margin-bottom: 30px;
+                min-height: 100px;
+            }
+
+            /* Even smaller button on very small screens */
+            .vapi-btn {
+                width: 100px !important;
+                height: 100px !important;
+            }
+        }
+
+        /* Handle very short screens (landscape mobile) */
+        @media (max-height: 500px) {
+            .widget-area {
+                margin-top: 15px;
+                margin-bottom: 20px;
+                min-height: 80px;
+            }
+
+            .intro-section {
+                margin-bottom: 20px;
+            }
+
+            .tips {
+                margin-bottom: 20px;
+                padding: 10px;
+            }
         }
     </style>
 </head>
@@ -171,8 +241,8 @@
         
         // THIS IS THE KEY - Use buttonConfig for proper styling
         const buttonConfig = {
-            position: "center", // center the button
-            offset: "0px",
+            position: "bottom-right", // Will be repositioned with CSS
+            offset: "20px",
             width: "144px",
             height: "144px",
             
