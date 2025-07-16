@@ -17,6 +17,9 @@ background-color: #f8f9fa;
 overflow-x: hidden;
 }
 
+
+
+
 .container {
 max-width: 800px;
 margin: 0 auto;
@@ -66,6 +69,15 @@ position: relative;
 height: 200px;
 }
 
+
+
+
+
+
+
+
+
+
 /* Status messages */
 .status-message {
 position: fixed;
@@ -103,12 +115,20 @@ max-height: none !important;
 flex-shrink: 0 !important;
 }
 
+
+
 .vapi-btn-is-idle {
 animation: dramatic-pulse 2s infinite ease-in-out !important;
 }
 
 .vapi-btn-is-active {
 animation: active-pulse 1s infinite ease-in-out !important;
+background-color: #e74c3c !important;
+}
+
+.vapi-btn-is-loading {
+animation: loading-pulse 0.8s infinite ease-in-out !important;
+background-color: #f39c12 !important;
 }
 
 /* DRAMATIC pulsing animation - much more obvious */
