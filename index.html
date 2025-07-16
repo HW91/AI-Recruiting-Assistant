@@ -52,7 +52,7 @@
         .tips {
             font-size: 16px;
             color: #666;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             padding: 15px;
             background-color: #e8f4f8;
             border-radius: 8px;
@@ -64,20 +64,10 @@
             align-items: center;
             justify-content: center;
             min-height: 200px;
-            margin-top: 40px;
+            margin-top: 20px;
             margin-bottom: 60px;
             position: relative;
-            /* Ensure the button stays within this container */
-            overflow: visible;
-        }
-        
-        /* Ensure adequate spacing on mobile */
-        @media (max-height: 600px) {
-            .widget-area {
-                margin-top: 30px;
-                margin-bottom: 50px;
-                min-height: 150px;
-            }
+            padding: 20px;
         }
         
         /* Status messages */
@@ -96,23 +86,16 @@
             text-align: center;
         }
 
-        /* MAXIMUM AGGRESSION - Target every possible VAPI selector */
-        .vapi-btn,
-        [class*="vapi-btn"],
-        [class*="vapi"],
-        button[class*="vapi"],
-        div[class*="vapi"] button,
-        * .vapi-btn,
-        html body .vapi-btn,
-        .vapi-btn.vapi-btn.vapi-btn {
-            /* Position relative to the widget-area container, not viewport */
+        /* VAPI button styling */
+        .vapi-btn {
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 20px rgba(52, 73, 94, 0.3) !important;
+            /* Center the button in widget-area */
             position: absolute !important;
             top: 50% !important;
             left: 50% !important;
-            right: auto !important;
-            bottom: auto !important;
-            /* Transform relative to the container center */
             transform: translate(-50%, -50%) !important;
+            /* Ensure perfect circle */
             border-radius: 50% !important;
             aspect-ratio: 1 / 1 !important;
             min-width: 0 !important;
@@ -120,95 +103,39 @@
             max-width: none !important;
             max-height: none !important;
             flex-shrink: 0 !important;
-            /* Keep it within the widget-area bounds */
-            z-index: 10 !important;
-            
-            /* FORCE the animation with every trick possible */
-            animation: mega-pulse 2s infinite ease-in-out !important;
-            animation-fill-mode: both !important;
-            animation-play-state: running !important;
-            animation-delay: 0s !important;
-            animation-direction: normal !important;
-            animation-iteration-count: infinite !important;
-            animation-timing-function: ease-in-out !important;
-            animation-duration: 2s !important;
-            animation-name: mega-pulse !important;
-        }
-
-        /* MEGA aggressive pulsing - should override everything */
-        @keyframes mega-pulse {
-            0% {
-                background: #34495e !important;
-                background-color: #34495e !important;
-                box-shadow: 0 0 10px rgba(52, 73, 94, 0.2) !important;
-                opacity: 0.8 !important;
-                transform: translate(-50%, -50%) scale(1) !important;
-                filter: brightness(1) !important;
-            }
-            50% {
-                background: #5dade2 !important;
-                background-color: #5dade2 !important;
-                box-shadow: 0 0 40px rgba(93, 173, 226, 0.9) !important, 
-                           0 0 60px rgba(93, 173, 226, 0.6) !important,
-                           0 0 80px rgba(93, 173, 226, 0.3) !important;
-                opacity: 1 !important;
-                transform: translate(-50%, -50%) scale(1.05) !important;
-                filter: brightness(1.2) !important;
-            }
-            100% {
-                background: #34495e !important;
-                background-color: #34495e !important;
-                box-shadow: 0 0 10px rgba(52, 73, 94, 0.2) !important;
-                opacity: 0.8 !important;
-                transform: translate(-50%, -50%) scale(1) !important;
-                filter: brightness(1) !important;
-            }
         }
 
         .vapi-btn-is-idle {
-            animation: dramatic-pulse 2s infinite ease-in-out !important;
+            animation: gentle-pulse 2s infinite ease-in-out !important;
         }
 
         .vapi-btn-is-active {
-            animation: active-pulse 1s infinite ease-in-out !important;
-            background-color: #e74c3c !important;
+            animation: active-pulse 1.5s infinite ease-in-out !important;
         }
 
-        .vapi-btn-is-loading {
-            animation: loading-pulse 0.8s infinite ease-in-out !important;
-            background-color: #f39c12 !important;
-        }
-
-        /* DRAMATIC pulsing animation - much more obvious */
-        @keyframes dramatic-pulse {
-            0% {
-                background-color: #34495e !important;
-                box-shadow: 0 0 0px rgba(52, 73, 94, 0.4) !important;
+        @keyframes gentle-pulse {
+            0% { 
+                box-shadow: 0 4px 20px rgba(52, 73, 94, 0.3) !important;
                 transform: translate(-50%, -50%) scale(1) !important;
-                opacity: 0.7 !important;
             }
-            50% {
-                background-color: #3498db !important;
-                box-shadow: 0 0 30px rgba(52, 152, 219, 0.8) !important,
-                           0 0 60px rgba(52, 152, 219, 0.6) !important,
-                           0 0 90px rgba(52, 152, 219, 0.4) !important;
-                transform: translate(-50%, -50%) scale(1.15) !important;
-                opacity: 1 !important;
+            50% { 
+                box-shadow: 0 8px 30px rgba(52, 73, 94, 0.5) !important;
+                transform: translate(-50%, -50%) scale(1.05) !important;
             }
-            100% {
-                background-color: #34495e !important;
-                box-shadow: 0 0 0px rgba(52, 73, 94, 0.4) !important;
+            100% { 
+                box-shadow: 0 4px 20px rgba(52, 73, 94, 0.3) !important;
                 transform: translate(-50%, -50%) scale(1) !important;
-                opacity: 0.7 !important;
             }
         }
 
         @keyframes active-pulse {
             0%, 100% { 
                 box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4) !important;
+                transform: translate(-50%, -50%) scale(1) !important;
             }
             50% { 
                 box-shadow: 0 12px 35px rgba(231, 76, 60, 0.7) !important;
+                transform: translate(-50%, -50%) scale(1.05) !important;
             }
         }
         
@@ -218,64 +145,134 @@
                 padding: 15px;
             }
             
+            .intro-section {
+                margin-bottom: 30px;
+            }
+            
             .intro-section h1 {
                 font-size: 28px;
+                margin-bottom: 20px;
             }
             
             .intro-section p {
                 font-size: 16px;
             }
 
-            .widget-area {
-                margin-top: 40px;
-                margin-bottom: 50px;
-                min-height: 140px;
-                /* Ensure enough space for the button */
-                padding: 10px;
+            .tips {
+                margin-bottom: 40px;
+                padding: 12px;
             }
 
-            /* Smaller button on mobile - keep it circular */
+            .widget-area {
+                min-height: 160px;
+                margin-top: 15px;
+                margin-bottom: 40px;
+                padding: 15px;
+            }
+
+            /* Smaller button on mobile */
             .vapi-btn {
                 width: 120px !important;
                 height: 120px !important;
-                border-radius: 50% !important;
             }
         }
 
         @media (max-width: 480px) {
             .intro-section h1 {
                 font-size: 24px;
+                margin-bottom: 15px;
+            }
+            
+            .intro-section {
+                margin-bottom: 25px;
+            }
+            
+            .intro-section p {
+                font-size: 15px;
+                margin-bottom: 15px;
             }
             
             .tips {
                 padding: 12px;
                 font-size: 14px;
-                margin-bottom: 30px;
+                margin-bottom: 35px;
             }
 
             .widget-area {
-                margin-top: 30px;
-                margin-bottom: 40px;
-                min-height: 120px;
-                /* Extra spacing on small screens */
-                padding: 15px 10px;
+                min-height: 140px;
+                margin-top: 10px;
+                margin-bottom: 30px;
+                padding: 10px;
             }
 
-            /* Even smaller button on very small screens - keep it circular */
+            /* Smaller button on very small screens */
             .vapi-btn {
                 width: 100px !important;
                 height: 100px !important;
-                border-radius: 50% !important;
             }
         }
 
         /* Handle very short screens (landscape mobile) */
-        @media (max-height: 500px) {
-            .widget-area {
-                margin-top: 20px;
-                margin-bottom: 30px;
-                min-height: 100px;
+        @media (max-height: 600px) {
+            .intro-section {
+                margin-bottom: 20px;
+            }
+
+            .tips {
+                margin-bottom: 25px;
                 padding: 10px;
+            }
+
+            .widget-area {
+                min-height: 120px;
+                margin-top: 10px;
+                margin-bottom: 20px;
+                padding: 10px;
+            }
+
+            /* Adjust button size for landscape mode */
+            .vapi-btn {
+                width: 90px !important;
+                height: 90px !important;
+            }
+        }
+
+        /* Extra small screens */
+        @media (max-width: 320px) {
+            .container {
+                padding: 10px;
+            }
+
+            .intro-section h1 {
+                font-size: 22px;
+            }
+
+            .tips {
+                font-size: 13px;
+                margin-bottom: 30px;
+            }
+
+            .widget-area {
+                min-height: 120px;
+                padding: 8px;
+            }
+
+            .vapi-btn {
+                width: 85px !important;
+                height: 85px !important;
+            }
+        }
+
+        /* Very short screens with small width */
+        @media (max-height: 500px) and (max-width: 480px) {
+            .intro-section h1 {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+
+            .intro-section p {
+                font-size: 14px;
+                margin-bottom: 10px;
             }
 
             .intro-section {
@@ -283,30 +280,21 @@
             }
 
             .tips {
-                margin-bottom: 15px;
-                padding: 10px;
+                margin-bottom: 20px;
+                padding: 8px;
+                font-size: 12px;
             }
 
-            /* Smaller button for landscape mode */
-            .vapi-btn {
-                width: 80px !important;
-                height: 80px !important;
-                border-radius: 50% !important;
-            }
-        }
-
-        /* Extra small screens */
-        @media (max-width: 320px) {
             .widget-area {
-                margin-top: 25px;
-                min-height: 110px;
-                padding: 10px;
+                min-height: 100px;
+                margin-top: 5px;
+                margin-bottom: 15px;
+                padding: 5px;
             }
-            
+
             .vapi-btn {
-                width: 90px !important;
-                height: 90px !important;
-                border-radius: 50% !important;
+                width: 75px !important;
+                height: 75px !important;
             }
         }
     </style>
@@ -342,7 +330,7 @@
         const assistant = "35c7f5f0-a44c-4172-85da-1c05cc5e55e7"; // Your assistant ID
         const apiKey = "1f80cbcd-97fc-45ad-ba54-5eff014c5f4e"; // Your public key
         
-        // THIS IS THE KEY - Use buttonConfig for proper styling
+        // Button configuration for proper styling
         const buttonConfig = {
             position: "bottom-right", // Will be repositioned with CSS
             offset: "20px",
