@@ -14,6 +14,9 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
             overflow-x: hidden;
         }
         
@@ -21,6 +24,9 @@
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
         
         .intro-section {
@@ -46,7 +52,7 @@
         .tips {
             font-size: 16px;
             color: #666;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
             padding: 15px;
             background-color: #e8f4f8;
             border-radius: 8px;
@@ -58,10 +64,18 @@
             align-items: center;
             justify-content: center;
             min-height: 200px;
-            margin-top: 20px;
+            margin-top: 40px;
             margin-bottom: 60px;
             position: relative;
-            padding: 20px;
+        }
+        
+        /* Ensure adequate spacing on mobile */
+        @media (max-height: 600px) {
+            .widget-area {
+                margin-top: 20px;
+                margin-bottom: 40px;
+                min-height: 150px;
+            }
         }
         
         /* Status messages */
@@ -80,16 +94,18 @@
             text-align: center;
         }
 
-        /* VAPI button styling */
+        /* Optional: Additional styling for VAPI button states */
         .vapi-btn {
             transition: all 0.3s ease !important;
             box-shadow: 0 4px 20px rgba(52, 73, 94, 0.3) !important;
-            /* Center the button in widget-area */
+            /* Override VAPI positioning to center in widget-area */
             position: absolute !important;
             top: 50% !important;
             left: 50% !important;
             transform: translate(-50%, -50%) !important;
-            /* Ensure perfect circle */
+            right: auto !important;
+            bottom: auto !important;
+            /* Ensure perfect circle on all screens */
             border-radius: 50% !important;
             aspect-ratio: 1 / 1 !important;
             min-width: 0 !important;
@@ -110,26 +126,24 @@
         @keyframes gentle-pulse {
             0% { 
                 box-shadow: 0 4px 20px rgba(52, 73, 94, 0.3) !important;
-                transform: translate(-50%, -50%) scale(1) !important;
+                transform: scale(1) !important;
             }
             50% { 
                 box-shadow: 0 8px 30px rgba(52, 73, 94, 0.5) !important;
-                transform: translate(-50%, -50%) scale(1.05) !important;
+                transform: scale(1.05) !important;
             }
             100% { 
                 box-shadow: 0 4px 20px rgba(52, 73, 94, 0.3) !important;
-                transform: translate(-50%, -50%) scale(1) !important;
+                transform: scale(1) !important;
             }
         }
 
         @keyframes active-pulse {
             0%, 100% { 
                 box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4) !important;
-                transform: translate(-50%, -50%) scale(1) !important;
             }
             50% { 
                 box-shadow: 0 12px 35px rgba(231, 76, 60, 0.7) !important;
-                transform: translate(-50%, -50%) scale(1.05) !important;
             }
         }
         
@@ -139,156 +153,83 @@
                 padding: 15px;
             }
             
-            .intro-section {
-                margin-bottom: 30px;
-            }
-            
             .intro-section h1 {
                 font-size: 28px;
-                margin-bottom: 20px;
             }
             
             .intro-section p {
                 font-size: 16px;
             }
 
-            .tips {
-                margin-bottom: 40px;
-                padding: 12px;
-            }
-
             .widget-area {
-                min-height: 200px;
-                margin-top: 15px;
+                margin-top: 30px;
                 margin-bottom: 40px;
-                padding: 15px;
+                min-height: 120px;
             }
 
-            /* Smaller button on mobile */
+            /* Smaller button on mobile - keep it circular */
             .vapi-btn {
                 width: 120px !important;
                 height: 120px !important;
+                border-radius: 50% !important;
             }
         }
 
         @media (max-width: 480px) {
             .intro-section h1 {
                 font-size: 24px;
-                margin-bottom: 15px;
-            }
-            
-            .intro-section {
-                margin-bottom: 25px;
-            }
-            
-            .intro-section p {
-                font-size: 15px;
-                margin-bottom: 15px;
             }
             
             .tips {
                 padding: 12px;
                 font-size: 14px;
-                margin-bottom: 35px;
             }
 
             .widget-area {
-                min-height: 180px;
-                margin-top: 10px;
+                margin-top: 20px;
                 margin-bottom: 30px;
-                padding: 10px;
+                min-height: 100px;
             }
 
-            /* Smaller button on very small screens */
+            /* Even smaller button on very small screens - keep it circular */
             .vapi-btn {
                 width: 100px !important;
                 height: 100px !important;
+                border-radius: 50% !important;
             }
         }
 
         /* Handle very short screens (landscape mobile) */
-        @media (max-height: 600px) {
+        @media (max-height: 500px) {
+            .widget-area {
+                margin-top: 15px;
+                margin-bottom: 20px;
+                min-height: 80px;
+            }
+
             .intro-section {
                 margin-bottom: 20px;
             }
 
             .tips {
-                margin-bottom: 25px;
-                padding: 10px;
-            }
-
-            .widget-area {
-                min-height: 160px;
-                margin-top: 10px;
                 margin-bottom: 20px;
                 padding: 10px;
             }
 
             /* Adjust button size for landscape mode */
             .vapi-btn {
-                width: 90px !important;
-                height: 90px !important;
+                width: 80px !important;
+                height: 80px !important;
+                border-radius: 50% !important;
             }
         }
 
         /* Extra small screens */
         @media (max-width: 320px) {
-            .container {
-                padding: 10px;
-            }
-
-            .intro-section h1 {
-                font-size: 22px;
-            }
-
-            .tips {
-                font-size: 13px;
-                margin-bottom: 30px;
-            }
-
-            .widget-area {
-                min-height: 160px;
-                padding: 8px;
-            }
-
             .vapi-btn {
-                width: 85px !important;
-                height: 85px !important;
-            }
-        }
-
-        /* Very short screens with small width */
-        @media (max-height: 500px) and (max-width: 480px) {
-            .intro-section h1 {
-                font-size: 20px;
-                margin-bottom: 10px;
-            }
-
-            .intro-section p {
-                font-size: 14px;
-                margin-bottom: 10px;
-            }
-
-            .intro-section {
-                margin-bottom: 15px;
-            }
-
-            .tips {
-                margin-bottom: 20px;
-                padding: 8px;
-                font-size: 12px;
-            }
-
-            .widget-area {
-                min-height: 140px;
-                margin-top: 5px;
-                margin-bottom: 15px;
-                padding: 5px;
-            }
-
-            .vapi-btn {
-                width: 75px !important;
-                height: 75px !important;
+                width: 90px !important;
+                height: 90px !important;
+                border-radius: 50% !important;
             }
         }
     </style>
@@ -324,7 +265,7 @@
         const assistant = "35c7f5f0-a44c-4172-85da-1c05cc5e55e7"; // Your assistant ID
         const apiKey = "1f80cbcd-97fc-45ad-ba54-5eff014c5f4e"; // Your public key
         
-        // Button configuration for proper styling
+        // THIS IS THE KEY - Use buttonConfig for proper styling
         const buttonConfig = {
             position: "bottom-right", // Will be repositioned with CSS
             offset: "20px",
