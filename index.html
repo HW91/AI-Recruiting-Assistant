@@ -14,25 +14,25 @@ box-sizing: border-box;
 body {
 font-family: Arial, sans-serif;
 background-color: #f8f9fa;
+min-height: 100vh;
+display: flex;
+flex-direction: column;
 overflow-x: hidden;
 }
-
-
-
 
 .container {
 max-width: 800px;
 margin: 0 auto;
 padding: 20px;
-height: auto;
-min-height: 600px;
+flex: 1;
+display: flex;
+flex-direction: column;
 }
-
 
 .intro-section {
 text-align: left;
 color: #333;
-margin-bottom: 0;
+margin-bottom: 40px;
 }
 
 .intro-section h1 {
@@ -52,7 +52,7 @@ margin-bottom: 20px;
 .tips {
 font-size: 16px;
 color: #666;
-margin-bottom: 0;
+margin-bottom: 40px;
 padding: 15px;
 background-color: #e8f4f8;
 border-radius: 8px;
@@ -63,20 +63,20 @@ border-left: 4px solid #34495e;
 display: flex;
 align-items: center;
 justify-content: center;
-margin-top: 20px;
+min-height: 200px;
+margin-top: 40px;
 margin-bottom: 60px;
 position: relative;
-height: 200px;
 }
 
-
-
-
-
-
-
-
-
+/* Ensure adequate spacing on mobile */
+@media (max-height: 600px) {
+.widget-area {
+margin-top: 20px;
+margin-bottom: 40px;
+min-height: 150px;
+}
+}
 
 /* Status messages */
 .status-message {
@@ -94,11 +94,11 @@ display: none;
 text-align: center;
 }
 
-/* VAPI button styling - centered in widget-area */
+/* Optional: Additional styling for VAPI button states */
 .vapi-btn {
 transition: all 0.3s ease !important;
 box-shadow: 0 4px 20px rgba(52, 73, 94, 0.3) !important;
-/* Center in widget-area */
+/* Override VAPI positioning to center in widget-area */
 position: absolute !important;
 top: 50% !important;
 left: 50% !important;
@@ -113,9 +113,9 @@ min-height: 0 !important;
 max-width: none !important;
 max-height: none !important;
 flex-shrink: 0 !important;
+/* Force animation to show */
+animation: dramatic-pulse 2s infinite ease-in-out !important;
 }
-
-
 
 .vapi-btn-is-idle {
 animation: dramatic-pulse 2s infinite ease-in-out !important;
@@ -179,9 +179,9 @@ font-size: 16px;
 }
 
 .widget-area {
-margin-top: 20px;
-margin-bottom: 50px;
-height: 200px;
+margin-top: 30px;
+margin-bottom: 40px;
+min-height: 120px;
 }
 
 /* Smaller button on mobile - keep it circular */
@@ -204,8 +204,8 @@ font-size: 14px;
 
 .widget-area {
 margin-top: 20px;
-margin-bottom: 40px;
-height: 200px;
+margin-bottom: 30px;
+min-height: 100px;
 }
 
 /* Even smaller button on very small screens - keep it circular */
@@ -217,19 +217,19 @@ border-radius: 50% !important;
 }
 
 /* Handle very short screens (landscape mobile) */
-@media (max-height: 600px) {
+@media (max-height: 500px) {
 .widget-area {
-margin-top: 20px;
-margin-bottom: 30px;
-height: 200px;
+margin-top: 15px;
+margin-bottom: 20px;
+min-height: 80px;
 }
 
 .intro-section {
-margin-bottom: 0;
+margin-bottom: 20px;
 }
 
 .tips {
-margin-bottom: 0;
+margin-bottom: 20px;
 padding: 10px;
 }
 
@@ -243,10 +243,10 @@ border-radius: 50% !important;
 
 /* Extra small screens */
 @media (max-width: 320px) {
-.widget-area {
-margin-top: 20px;
-height: 200px;
-}
+
+
+
+
 
 .vapi-btn {
 width: 90px !important;
