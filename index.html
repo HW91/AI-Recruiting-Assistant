@@ -138,68 +138,12 @@
             .container {
                 padding: 15px;
             }
-            
-            .intro-section {
-                margin-bottom: 30px;
-            }
-            
-            .intro-section h1 {
-                font-size: 28px;
-                margin-bottom: 20px;
-            }
-            
-            .intro-section p {
-                font-size: 16px;
-            }
 
-            .tips {
-                margin-bottom: 40px;
-                padding: 12px;
-            }
-
-            .widget-area {
-                min-height: 200px;
-                margin-top: 15px;
-                margin-bottom: 40px;
-                padding: 15px;
-            }
-
-            /* Smaller button on mobile */
-            .vapi-btn {
-                width: 120px !important;
-                height: 120px !important;
-            }
+            /* Keep button size same as desktop on tablet */
         }
 
         @media (max-width: 480px) {
-            .intro-section h1 {
-                font-size: 24px;
-                margin-bottom: 15px;
-            }
-            
-            .intro-section {
-                margin-bottom: 25px;
-            }
-            
-            .intro-section p {
-                font-size: 15px;
-                margin-bottom: 15px;
-            }
-            
-            .tips {
-                padding: 12px;
-                font-size: 14px;
-                margin-bottom: 35px;
-            }
-
-            .widget-area {
-                min-height: 180px;
-                margin-top: 10px;
-                margin-bottom: 30px;
-                padding: 10px;
-            }
-
-            /* Smaller button on very small screens */
+            /* Only change button size on small screens */
             .vapi-btn {
                 width: 100px !important;
                 height: 100px !important;
@@ -208,87 +152,23 @@
 
         /* Handle very short screens (landscape mobile) */
         @media (max-height: 600px) {
-            .intro-section {
-                margin-bottom: 20px;
-            }
-
-            .tips {
-                margin-bottom: 25px;
-                padding: 10px;
-            }
-
-            .widget-area {
-                min-height: 160px;
-                margin-top: 10px;
-                margin-bottom: 20px;
-                padding: 10px;
-            }
-
-            /* Adjust button size for landscape mode */
-            .vapi-btn {
-                width: 90px !important;
-                height: 90px !important;
-            }
+            /* Keep all content same size, only adjust button if needed */
         }
 
         /* Extra small screens */
         @media (max-width: 320px) {
-            .container {
-                padding: 10px;
-            }
-
-            .intro-section h1 {
-                font-size: 22px;
-            }
-
-            .tips {
-                font-size: 13px;
-                margin-bottom: 30px;
-            }
-
-            .widget-area {
-                min-height: 160px;
-                padding: 8px;
-            }
-
             .vapi-btn {
-                width: 85px !important;
-                height: 85px !important;
+                width: 100px !important;
+                height: 100px !important;
             }
         }
 
         /* Very short screens with small width */
         @media (max-height: 500px) and (max-width: 480px) {
-            .intro-section h1 {
-                font-size: 20px;
-                margin-bottom: 10px;
-            }
-
-            .intro-section p {
-                font-size: 14px;
-                margin-bottom: 10px;
-            }
-
-            .intro-section {
-                margin-bottom: 15px;
-            }
-
-            .tips {
-                margin-bottom: 20px;
-                padding: 8px;
-                font-size: 12px;
-            }
-
-            .widget-area {
-                min-height: 140px;
-                margin-top: 5px;
-                margin-bottom: 15px;
-                padding: 5px;
-            }
-
+            /* Keep content same, only button changes */
             .vapi-btn {
-                width: 75px !important;
-                height: 75px !important;
+                width: 100px !important;
+                height: 100px !important;
             }
         }
     </style>
