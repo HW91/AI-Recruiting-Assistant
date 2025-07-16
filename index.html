@@ -68,17 +68,38 @@
             position: relative;
         }
         
-        /* VAPI Widget Styling - Center with 2-inch pulsing circle */
-        vapi-widget {
-            display: block !important;
+        /* VAPI Widget Styling - Aggressive override of SDK positioning */
+        vapi-widget,
+        vapi-widget *,
+        vapi-widget > *,
+        vapi-widget div,
+        vapi-widget button {
             position: fixed !important;
             top: 50% !important;
             left: 50% !important;
+            right: auto !important;
+            bottom: auto !important;
             transform: translate(-50%, -50%) !important;
-            width: 144px !important; /* 2 inches */
-            height: 144px !important; /* 2 inches */
+            width: 144px !important;
+            height: 144px !important;
             border-radius: 50% !important;
             z-index: 1000 !important;
+        }
+        
+        /* Force override any SDK positioning classes */
+        vapi-widget[style*="position"],
+        vapi-widget[style*="bottom"],
+        vapi-widget[style*="right"] {
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            right: auto !important;
+            bottom: auto !important;
+            transform: translate(-50%, -50%) !important;
+        }
+        
+        /* Animation for the widget */
+        vapi-widget {
             animation: pulse 2s infinite ease-in-out !important;
         }
         
@@ -104,6 +125,15 @@
                 opacity: 0.8 !important;
                 transform: translate(-50%, -50%) scale(1) !important;
             }
+        }
+        
+        /* Alternative approach - use CSS custom properties to override SDK */
+        :root {
+            --vapi-widget-position: fixed !important;
+            --vapi-widget-top: 50% !important;
+            --vapi-widget-left: 50% !important;
+            --vapi-widget-bottom: auto !important;
+            --vapi-widget-right: auto !important;
         }
         
         /* Text overlay for the widget */
@@ -233,7 +263,7 @@
     <script src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js" async type="text/javascript"></script>
     
     <script>
-        // Simple widget initialization - minimal interference
+        // Aggressive JavaScript to override SDK positioning
         console.log('AI Interview page loaded');
         
         function showStatus(message, duration = 3000) {
@@ -247,22 +277,84 @@
             }
         }
         
-        // Wait for widget to load with minimal interference
+        function forceWidgetCenter() {
+            const widget = document.querySelector('vapi-widget');
+            if (widget) {
+                // Override any positioning the SDK applies
+                widget.style.position = 'fixed';
+                widget.style.top = '50%';
+                widget.style.left = '50%';
+                widget.style.right = 'auto';
+                widget.style.bottom = 'auto';
+                widget.style.transform = 'translate(-50%, -50%)';
+                widget.style.width = '144px';
+                widget.style.height = '144px';
+                widget.style.borderRadius = '50%';
+                widget.style.zIndex = '1000';
+                
+                // Also target any child elements the SDK creates
+                const children = widget.querySelectorAll('*');
+                children.forEach(child => {
+                    if (child.style.position === 'fixed' || child.style.position === 'absolute') {
+                        child.style.position = 'relative';
+                        child.style.top = 'auto';
+                        child.style.left = 'auto';
+                        child.style.right = 'auto';
+                        child.style.bottom = 'auto';
+                    }
+                });
+                
+                console.log('✅ Widget positioning forced to center');
+                return true;
+            }
+            return false;
+        }
+        
+        // Continuously monitor and fix positioning
+        function setupPositionMonitor() {
+            const widget = document.querySelector('vapi-widget');
+            if (widget) {
+                // Use MutationObserver to watch for SDK changes
+                const observer = new MutationObserver(() => {
+                    forceWidgetCenter();
+                });
+                
+                observer.observe(widget, {
+                    attributes: true,
+                    attributeFilter: ['style', 'class'],
+                    childList: true,
+                    subtree: true
+                });
+                
+                // Also use setInterval as backup
+                setInterval(forceWidgetCenter, 500);
+                
+                console.log('✅ Position monitor active');
+            }
+        }
+        
+        // Wait for widget to load
         setTimeout(() => {
             const widget = document.querySelector('vapi-widget');
             if (widget) {
                 console.log('✅ VAPI widget found');
                 widget.classList.add('loaded');
                 showStatus('Ready for your interview!', 2000);
+                
+                // Force center positioning
+                forceWidgetCenter();
+                setupPositionMonitor();
+                
             } else {
                 console.log('❌ Widget not found, retrying...');
-                // Retry once more
                 setTimeout(() => {
                     const retryWidget = document.querySelector('vapi-widget');
                     if (retryWidget) {
                         console.log('✅ VAPI widget found on retry');
                         retryWidget.classList.add('loaded');
                         showStatus('Ready for your interview!', 2000);
+                        forceWidgetCenter();
+                        setupPositionMonitor();
                     } else {
                         console.log('❌ Widget failed to load');
                         showStatus('Please refresh the page if the interview button doesn\'t appear', 5000);
