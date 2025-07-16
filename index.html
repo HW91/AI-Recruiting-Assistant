@@ -68,10 +68,58 @@
             position: relative;
         }
         
-        /* VAPI Widget Styling - Minimal to avoid conflicts */
+        /* VAPI Widget Styling - Center with 2-inch pulsing circle */
         vapi-widget {
             display: block !important;
-            margin: 0 auto !important;
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            width: 144px !important; /* 2 inches */
+            height: 144px !important; /* 2 inches */
+            border-radius: 50% !important;
+            z-index: 1000 !important;
+            animation: pulse 2s infinite ease-in-out !important;
+        }
+        
+        /* Prominent pulsing animation */
+        @keyframes pulse {
+            0% {
+                background-color: #34495e !important;
+                box-shadow: 0 0 10px rgba(52, 73, 94, 0.2) !important;
+                opacity: 0.8 !important;
+                transform: translate(-50%, -50%) scale(1) !important;
+            }
+            50% {
+                background-color: #5dade2 !important;
+                box-shadow: 0 0 40px rgba(93, 173, 226, 0.9) !important, 
+                           0 0 60px rgba(93, 173, 226, 0.6) !important,
+                           0 0 80px rgba(93, 173, 226, 0.3) !important;
+                opacity: 1 !important;
+                transform: translate(-50%, -50%) scale(1.05) !important;
+            }
+            100% {
+                background-color: #34495e !important;
+                box-shadow: 0 0 10px rgba(52, 73, 94, 0.2) !important;
+                opacity: 0.8 !important;
+                transform: translate(-50%, -50%) scale(1) !important;
+            }
+        }
+        
+        /* Text overlay for the widget */
+        .widget-text-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            pointer-events: none;
+            z-index: 1001;
+            user-select: none;
         }
         
         /* Remove custom overlay that might interfere */
@@ -170,11 +218,13 @@
         
         <div class="widget-area">
             <vapi-widget 
-                assistant-id="73d1077b-bd3f-4338-89de-86ffc40db816" 
+                assistant-id="35c7f5f0-a44c-4172-85da-1c05cc5e55e7" 
                 public-key="1f80cbcd-97fc-45ad-ba54-5eff014c5f4e"
                 mode="voice"
                 theme="dark"
             ></vapi-widget>
+            
+            <div class="widget-text-overlay">Click to talk</div>
         </div>
     </div>
     
