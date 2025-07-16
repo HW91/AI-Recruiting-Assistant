@@ -68,13 +68,17 @@
             position: relative;
         }
         
-        /* Hide the default VAPI widget completely */
+        /* Hide the default VAPI widget visually but keep it functional */
         vapi-widget {
             opacity: 0 !important;
-            pointer-events: none !important;
             position: fixed !important;
-            top: -9999px !important;
-            left: -9999px !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            width: 144px !important;
+            height: 144px !important;
+            z-index: 999 !important;
+            pointer-events: auto !important; /* Keep it clickable */
         }
         
         /* Create our own custom 2-inch pulsing button */
@@ -270,8 +274,9 @@
     <script src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js" async type="text/javascript"></script>
     
     <script>
+        // Combine version 29 custom button with version 28 working logic
+        console.log('AI Interview page loaded');
         let isCallActive = false;
-        let widget = null;
         
         function showStatus(message, duration = 3000) {
             const statusEl = document.getElementById('statusMessage');
@@ -295,141 +300,142 @@
             }
         }
         
-        function toggleInterview() {
-            console.log('Custom button clicked, call active:', isCallActive);
-            
-            if (isCallActive) {
-                // End the call
-                stopInterview();
-            } else {
-                // Start the call
-                startInterview();
+        function forceWidgetPosition() {
+            const widget = document.querySelector('vapi-widget');
+            if (widget) {
+                // Keep widget invisible but in correct position for functionality
+                widget.style.position = 'fixed';
+                widget.style.top = '50%';
+                widget.style.left = '50%';
+                widget.style.transform = 'translate(-50%, -50%)';
+                widget.style.width = '144px';
+                widget.style.height = '144px';
+                widget.style.opacity = '0';
+                widget.style.zIndex = '999';
+                widget.style.pointerEvents = 'auto';
+                return true;
             }
+            return false;
         }
         
-        function startInterview() {
+        function toggleInterview() {
+            console.log('Custom button clicked, triggering real widget');
             const widget = document.querySelector('vapi-widget');
+            
             if (!widget) {
                 showStatus('Interview system not ready. Please refresh the page.');
                 return;
             }
             
-            updateButton('Connecting...', 'connecting');
-            showStatus('Starting your interview...');
-            
+            // Directly click the real VAPI widget
             try {
-                // Try to trigger the widget
                 widget.click();
+                console.log('✅ Real widget clicked');
                 
-                // Also try to find and click internal buttons
-                setTimeout(() => {
-                    const shadowRoot = widget.shadowRoot;
-                    if (shadowRoot) {
-                        const startButton = shadowRoot.querySelector('button');
-                        if (startButton) {
-                            startButton.click();
-                        }
-                    }
-                    
-                    // If no shadow root, try finding buttons in regular DOM
-                    const buttons = widget.querySelectorAll('button');
-                    buttons.forEach(btn => {
-                        if (btn.textContent && btn.textContent.toLowerCase().includes('start')) {
-                            btn.click();
-                        }
-                    });
-                }, 100);
-                
-                // Update state after a delay
-                setTimeout(() => {
-                    if (!isCallActive) {
-                        isCallActive = true;
-                        updateButton('End Interview', 'active');
-                        showStatus('Interview started - speak clearly!');
-                    }
-                }, 2000);
-                
-            } catch (error) {
-                console.error('Error starting interview:', error);
-                updateButton('Click to talk');
-                showStatus('Failed to start interview. Please try again.');
-            }
-        }
-        
-        function stopInterview() {
-            const widget = document.querySelector('vapi-widget');
-            
-            updateButton('Ending...', 'connecting');
-            showStatus('Ending interview...');
-            
-            try {
-                // Try to find and click end button
-                if (widget) {
-                    const shadowRoot = widget.shadowRoot;
-                    if (shadowRoot) {
-                        const endButton = shadowRoot.querySelector('button');
-                        if (endButton) {
-                            endButton.click();
-                        }
-                    }
-                    
-                    const buttons = widget.querySelectorAll('button');
-                    buttons.forEach(btn => {
-                        if (btn.textContent && (btn.textContent.toLowerCase().includes('end') || btn.textContent.toLowerCase().includes('stop'))) {
-                            btn.click();
-                        }
-                    });
+                if (!isCallActive) {
+                    updateButton('Connecting...', 'connecting');
+                    showStatus('Starting your interview...');
+                } else {
+                    updateButton('Ending...', 'connecting');
+                    showStatus('Ending interview...');
                 }
                 
-                // Reset state
-                setTimeout(() => {
-                    isCallActive = false;
-                    updateButton('Click to talk');
-                    showStatus('Interview ended');
-                }, 1000);
-                
             } catch (error) {
-                console.error('Error ending interview:', error);
-                isCallActive = false;
-                updateButton('Click to talk');
-                showStatus('Interview ended');
+                console.error('Error clicking widget:', error);
+                showStatus('Error starting interview. Please try again.');
             }
         }
         
-        // Initialize when page loads
-        setTimeout(() => {
-            widget = document.querySelector('vapi-widget');
+        function setupWidgetMonitoring() {
+            const widget = document.querySelector('vapi-widget');
             if (widget) {
-                console.log('✅ VAPI widget found (hidden)');
-                showStatus('Ready for your interview!', 2000);
-                
-                // Monitor widget for state changes
+                // Monitor widget state changes (from version 28 approach)
                 const observer = new MutationObserver((mutations) => {
-                    // Check if widget indicates active call
-                    const isActive = widget.classList.contains('active') || 
-                                   widget.getAttribute('data-state') === 'active' ||
-                                   widget.style.display !== 'none';
-                    
-                    if (isActive && !isCallActive) {
-                        isCallActive = true;
-                        updateButton('End Interview', 'active');
-                        showStatus('Interview is active');
-                    } else if (!isActive && isCallActive) {
-                        isCallActive = false;
-                        updateButton('Click to talk');
-                        showStatus('Interview ended');
-                    }
+                    mutations.forEach((mutation) => {
+                        if (mutation.type === 'attributes' || mutation.type === 'childList') {
+                            // Check various indicators that call is active
+                            const hasActiveClass = widget.classList.contains('active');
+                            const hasActiveData = widget.getAttribute('data-state') === 'active';
+                            const hasActiveButton = widget.querySelector('[data-testid*="end"], [data-testid*="stop"], button[aria-label*="end"], button[aria-label*="stop"]');
+                            
+                            const shouldBeActive = hasActiveClass || hasActiveData || hasActiveButton;
+                            
+                            if (shouldBeActive && !isCallActive) {
+                                isCallActive = true;
+                                updateButton('End Interview', 'active');
+                                showStatus('Interview started - speak clearly!');
+                                console.log('✅ Call detected as active');
+                            } else if (!shouldBeActive && isCallActive) {
+                                isCallActive = false;
+                                updateButton('Click to talk');
+                                showStatus('Interview ended');
+                                console.log('✅ Call detected as ended');
+                            }
+                        }
+                    });
                 });
                 
                 observer.observe(widget, {
                     attributes: true,
+                    attributeFilter: ['class', 'data-state', 'aria-label'],
                     childList: true,
                     subtree: true
                 });
                 
+                // Also monitor for text changes in widget
+                setInterval(() => {
+                    const widgetText = widget.textContent || '';
+                    const isActive = widgetText.toLowerCase().includes('end') || 
+                                   widgetText.toLowerCase().includes('stop') ||
+                                   widgetText.toLowerCase().includes('hang up');
+                    
+                    if (isActive && !isCallActive) {
+                        isCallActive = true;
+                        updateButton('End Interview', 'active');
+                        showStatus('Interview started - speak clearly!');
+                    } else if (!isActive && isCallActive && !widgetText.toLowerCase().includes('start')) {
+                        isCallActive = false;
+                        updateButton('Click to talk');
+                        showStatus('Interview ended');
+                    }
+                }, 1000);
+                
+                console.log('✅ Widget monitoring setup complete');
+            }
+        }
+        
+        // Initialize (combining version 28 and 29 approaches)
+        setTimeout(() => {
+            const widget = document.querySelector('vapi-widget');
+            if (widget) {
+                console.log('✅ VAPI widget found');
+                
+                // Position the widget correctly (version 28 logic)
+                forceWidgetPosition();
+                
+                // Set up monitoring (version 28 logic)
+                setupWidgetMonitoring();
+                
+                // Continue monitoring position
+                setInterval(forceWidgetPosition, 1000);
+                
+                showStatus('Ready for your interview!', 2000);
+                
             } else {
-                console.log('❌ Widget not found');
-                showStatus('Interview system failed to load. Please refresh the page.', 5000);
+                console.log('❌ Widget not found, retrying...');
+                setTimeout(() => {
+                    const retryWidget = document.querySelector('vapi-widget');
+                    if (retryWidget) {
+                        console.log('✅ VAPI widget found on retry');
+                        forceWidgetPosition();
+                        setupWidgetMonitoring();
+                        setInterval(forceWidgetPosition, 1000);
+                        showStatus('Ready for your interview!', 2000);
+                    } else {
+                        console.log('❌ Widget failed to load');
+                        showStatus('Please refresh the page if the interview button doesn\'t appear', 5000);
+                    }
+                }, 3000);
             }
         }, 2000);
     </script>
