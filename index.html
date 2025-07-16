@@ -113,37 +113,45 @@
             max-width: none !important;
             max-height: none !important;
             flex-shrink: 0 !important;
+            /* Force animation to show */
+            animation: dramatic-pulse 2s infinite ease-in-out !important;
         }
 
         .vapi-btn-is-idle {
-            animation: pulse 2s infinite ease-in-out !important;
+            animation: dramatic-pulse 2s infinite ease-in-out !important;
         }
 
         .vapi-btn-is-active {
-            animation: active-pulse 1.5s infinite ease-in-out !important;
+            animation: active-pulse 1s infinite ease-in-out !important;
+            background-color: #e74c3c !important;
         }
 
-        /* Beautiful pulsing animation on the real widget */
-        @keyframes pulse {
+        .vapi-btn-is-loading {
+            animation: loading-pulse 0.8s infinite ease-in-out !important;
+            background-color: #f39c12 !important;
+        }
+
+        /* DRAMATIC pulsing animation - much more obvious */
+        @keyframes dramatic-pulse {
             0% {
                 background-color: #34495e !important;
-                box-shadow: 0 0 10px rgba(52, 73, 94, 0.2) !important;
-                opacity: 0.8 !important;
+                box-shadow: 0 0 0px rgba(52, 73, 94, 0.4) !important;
                 transform: translate(-50%, -50%) scale(1) !important;
+                opacity: 0.7 !important;
             }
             50% {
-                background-color: #5dade2 !important;
-                box-shadow: 0 0 40px rgba(93, 173, 226, 0.9) !important,
-                           0 0 60px rgba(93, 173, 226, 0.6) !important,
-                           0 0 80px rgba(93, 173, 226, 0.3) !important;
+                background-color: #3498db !important;
+                box-shadow: 0 0 30px rgba(52, 152, 219, 0.8) !important,
+                           0 0 60px rgba(52, 152, 219, 0.6) !important,
+                           0 0 90px rgba(52, 152, 219, 0.4) !important;
+                transform: translate(-50%, -50%) scale(1.15) !important;
                 opacity: 1 !important;
-                transform: translate(-50%, -50%) scale(1.05) !important;
             }
             100% {
                 background-color: #34495e !important;
-                box-shadow: 0 0 10px rgba(52, 73, 94, 0.2) !important;
-                opacity: 0.8 !important;
+                box-shadow: 0 0 0px rgba(52, 73, 94, 0.4) !important;
                 transform: translate(-50%, -50%) scale(1) !important;
+                opacity: 0.7 !important;
             }
         }
 
