@@ -68,32 +68,32 @@
             position: relative;
         }
         
-        /* Hide the default VAPI widget visually but keep it functional */
+        /* Position VAPI widget center but keep it functional */
         vapi-widget {
-            opacity: 0 !important;
             position: fixed !important;
             top: 50% !important;
             left: 50% !important;
             transform: translate(-50%, -50%) !important;
             width: 144px !important;
             height: 144px !important;
-            z-index: 999 !important;
-            pointer-events: auto !important; /* Keep it clickable */
+            border-radius: 50% !important;
+            z-index: 1000 !important;
+            /* Keep widget visible but make it blend in */
+            opacity: 0.01 !important; /* Nearly invisible but still functional */
         }
         
-        /* Create our own custom 2-inch pulsing button */
+        /* Custom visual overlay - no pointer events so clicks pass through */
         .custom-interview-button {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 144px; /* 2 inches */
-            height: 144px; /* 2 inches */
+            width: 144px;
+            height: 144px;
             border-radius: 50%;
             background-color: #34495e;
             color: white;
             border: none;
-            cursor: pointer;
             font-family: Arial, sans-serif;
             font-size: 16px;
             font-weight: bold;
@@ -101,14 +101,10 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            z-index: 1000;
+            z-index: 999; /* Below widget so clicks pass through */
             animation: pulse 2s infinite ease-in-out;
-            transition: transform 0.3s ease;
+            pointer-events: none; /* Let clicks pass through to widget */
             user-select: none;
-        }
-        
-        .custom-interview-button:hover {
-            transform: translate(-50%, -50%) scale(1.05);
         }
         
         /* Our beautiful pulsing animation */
@@ -254,7 +250,7 @@
         </div>
         
         <div class="widget-area">
-            <!-- Hidden VAPI widget -->
+            <!-- Functional VAPI widget (nearly invisible but clickable) -->
             <vapi-widget 
                 assistant-id="35c7f5f0-a44c-4172-85da-1c05cc5e55e7" 
                 public-key="1f80cbcd-97fc-45ad-ba54-5eff014c5f4e"
@@ -262,10 +258,10 @@
                 theme="dark"
             ></vapi-widget>
             
-            <!-- Our custom pulsing button -->
-            <button class="custom-interview-button" id="customButton" onclick="toggleInterview()">
+            <!-- Visual overlay (non-interactive, just for appearance) -->
+            <div class="custom-interview-button" id="customButton">
                 Click to talk
-            </button>
+            </div>
         </div>
     </div>
     
@@ -274,7 +270,7 @@
     <script src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js" async type="text/javascript"></script>
     
     <script>
-        // Combine version 29 custom button with version 28 working logic
+        // Simple approach: let real widget handle clicks, just monitor state
         console.log('AI Interview page loaded');
         let isCallActive = false;
         
@@ -289,7 +285,7 @@
             }
         }
         
-        function updateButton(text, state = 'default') {
+        function updateButtonVisual(text, state = 'default') {
             const button = document.getElementById('customButton');
             if (button) {
                 button.textContent = text;
@@ -300,126 +296,65 @@
             }
         }
         
-        function forceWidgetPosition() {
+        function monitorWidgetState() {
             const widget = document.querySelector('vapi-widget');
-            if (widget) {
-                // Keep widget invisible but in correct position for functionality
-                widget.style.position = 'fixed';
-                widget.style.top = '50%';
-                widget.style.left = '50%';
-                widget.style.transform = 'translate(-50%, -50%)';
-                widget.style.width = '144px';
-                widget.style.height = '144px';
-                widget.style.opacity = '0';
-                widget.style.zIndex = '999';
-                widget.style.pointerEvents = 'auto';
-                return true;
-            }
-            return false;
-        }
-        
-        function toggleInterview() {
-            console.log('Custom button clicked, triggering real widget');
-            const widget = document.querySelector('vapi-widget');
+            if (!widget) return;
             
-            if (!widget) {
-                showStatus('Interview system not ready. Please refresh the page.');
-                return;
-            }
-            
-            // Directly click the real VAPI widget
-            try {
-                widget.click();
-                console.log('✅ Real widget clicked');
-                
-                if (!isCallActive) {
-                    updateButton('Connecting...', 'connecting');
-                    showStatus('Starting your interview...');
-                } else {
-                    updateButton('Ending...', 'connecting');
-                    showStatus('Ending interview...');
-                }
-                
-            } catch (error) {
-                console.error('Error clicking widget:', error);
-                showStatus('Error starting interview. Please try again.');
-            }
-        }
-        
-        function setupWidgetMonitoring() {
-            const widget = document.querySelector('vapi-widget');
-            if (widget) {
-                // Monitor widget state changes (from version 28 approach)
-                const observer = new MutationObserver((mutations) => {
-                    mutations.forEach((mutation) => {
-                        if (mutation.type === 'attributes' || mutation.type === 'childList') {
-                            // Check various indicators that call is active
-                            const hasActiveClass = widget.classList.contains('active');
-                            const hasActiveData = widget.getAttribute('data-state') === 'active';
-                            const hasActiveButton = widget.querySelector('[data-testid*="end"], [data-testid*="stop"], button[aria-label*="end"], button[aria-label*="stop"]');
-                            
-                            const shouldBeActive = hasActiveClass || hasActiveData || hasActiveButton;
-                            
-                            if (shouldBeActive && !isCallActive) {
-                                isCallActive = true;
-                                updateButton('End Interview', 'active');
-                                showStatus('Interview started - speak clearly!');
-                                console.log('✅ Call detected as active');
-                            } else if (!shouldBeActive && isCallActive) {
-                                isCallActive = false;
-                                updateButton('Click to talk');
-                                showStatus('Interview ended');
-                                console.log('✅ Call detected as ended');
-                            }
-                        }
-                    });
-                });
-                
-                observer.observe(widget, {
-                    attributes: true,
-                    attributeFilter: ['class', 'data-state', 'aria-label'],
-                    childList: true,
-                    subtree: true
-                });
-                
-                // Also monitor for text changes in widget
-                setInterval(() => {
-                    const widgetText = widget.textContent || '';
-                    const isActive = widgetText.toLowerCase().includes('end') || 
+            // Simple state monitoring - just watch for text changes
+            setInterval(() => {
+                const widgetText = widget.textContent || '';
+                const hasEndButton = widgetText.toLowerCase().includes('end') || 
                                    widgetText.toLowerCase().includes('stop') ||
                                    widgetText.toLowerCase().includes('hang up');
-                    
-                    if (isActive && !isCallActive) {
-                        isCallActive = true;
-                        updateButton('End Interview', 'active');
-                        showStatus('Interview started - speak clearly!');
-                    } else if (!isActive && isCallActive && !widgetText.toLowerCase().includes('start')) {
-                        isCallActive = false;
-                        updateButton('Click to talk');
-                        showStatus('Interview ended');
-                    }
-                }, 1000);
                 
-                console.log('✅ Widget monitoring setup complete');
-            }
+                if (hasEndButton && !isCallActive) {
+                    // Call started
+                    isCallActive = true;
+                    updateButtonVisual('End Interview', 'active');
+                    showStatus('Interview started - speak clearly!');
+                    console.log('✅ Call detected as active');
+                } else if (!hasEndButton && isCallActive) {
+                    // Call ended
+                    isCallActive = false;
+                    updateButtonVisual('Click to talk');
+                    showStatus('Interview ended');
+                    console.log('✅ Call detected as ended');
+                }
+            }, 500);
+            
+            // Also monitor DOM changes
+            const observer = new MutationObserver(() => {
+                const widgetText = widget.textContent || '';
+                const hasEndButton = widgetText.toLowerCase().includes('end') || 
+                                   widgetText.toLowerCase().includes('stop');
+                
+                if (hasEndButton && !isCallActive) {
+                    isCallActive = true;
+                    updateButtonVisual('End Interview', 'active');
+                    showStatus('Interview started - speak clearly!');
+                } else if (!hasEndButton && isCallActive && widgetText.toLowerCase().includes('start')) {
+                    isCallActive = false;
+                    updateButtonVisual('Click to talk');
+                    showStatus('Interview ended');
+                }
+            });
+            
+            observer.observe(widget, {
+                childList: true,
+                subtree: true,
+                characterData: true
+            });
         }
         
-        // Initialize (combining version 28 and 29 approaches)
+        // Initialize - much simpler approach
         setTimeout(() => {
             const widget = document.querySelector('vapi-widget');
             if (widget) {
-                console.log('✅ VAPI widget found');
-                
-                // Position the widget correctly (version 28 logic)
-                forceWidgetPosition();
-                
-                // Set up monitoring (version 28 logic)
-                setupWidgetMonitoring();
-                
-                // Continue monitoring position
-                setInterval(forceWidgetPosition, 1000);
-                
+                console.log('✅ VAPI widget found and functional');
                 showStatus('Ready for your interview!', 2000);
+                
+                // Start monitoring widget state
+                monitorWidgetState();
                 
             } else {
                 console.log('❌ Widget not found, retrying...');
@@ -427,10 +362,8 @@
                     const retryWidget = document.querySelector('vapi-widget');
                     if (retryWidget) {
                         console.log('✅ VAPI widget found on retry');
-                        forceWidgetPosition();
-                        setupWidgetMonitoring();
-                        setInterval(forceWidgetPosition, 1000);
                         showStatus('Ready for your interview!', 2000);
+                        monitorWidgetState();
                     } else {
                         console.log('❌ Widget failed to load');
                         showStatus('Please refresh the page if the interview button doesn\'t appear', 5000);
