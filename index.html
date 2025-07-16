@@ -15,8 +15,6 @@
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
             overflow-x: hidden;
         }
         
@@ -24,49 +22,46 @@
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
         }
         
         .intro-section {
             text-align: left;
             color: #333;
-            margin-bottom: 0; /* Remove bottom margin - widget-area will handle spacing */
+            margin-bottom: 0;
         }
         
         .intro-section h1 {
             color: #34495e;
-            margin-bottom: 25px;
-            font-size: 32px;
+            margin-bottom: 20px;
+            font-size: 28px;
             text-align: center;
             font-weight: bold;
         }
         
         .intro-section p {
-            font-size: 18px;
-            line-height: 1.6;
-            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 15px;
         }
         
         .tips {
-            font-size: 16px;
+            font-size: 14px;
             color: #666;
-            margin-bottom: 0; /* Remove bottom margin - widget-area will handle spacing */
-            padding: 15px;
+            margin-bottom: 0;
+            padding: 12px;
             background-color: #e8f4f8;
             border-radius: 8px;
             border-left: 4px solid #34495e;
         }
         
         .widget-area {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 200px; /* Ensure adequate space for button */
             margin-top: 20px; /* Exactly 20px below tips */
-            margin-bottom: 60px; /* Adequate bottom spacing */
+            margin-bottom: 40px;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
             position: relative;
+            min-height: 184px; /* Button height + padding */
         }
         
         /* Status messages */
@@ -85,18 +80,18 @@
             text-align: center;
         }
 
-        /* VAPI button styling - centered in widget-area */
+        /* VAPI button styling - NO vertical centering */
         .vapi-btn {
             transition: all 0.3s ease !important;
             box-shadow: 0 4px 20px rgba(52, 73, 94, 0.3) !important;
-            /* Center in widget-area */
+            /* Position at top of widget-area, horizontally centered */
             position: absolute !important;
-            top: 50% !important;
+            top: 20px !important;
             left: 50% !important;
-            transform: translate(-50%, -50%) !important;
+            transform: translateX(-50%) !important;
             right: auto !important;
             bottom: auto !important;
-            /* Ensure perfect circle on all screens */
+            /* Ensure perfect circle */
             border-radius: 50% !important;
             aspect-ratio: 1 / 1 !important;
             min-width: 0 !important;
@@ -117,15 +112,15 @@
         @keyframes gentle-pulse {
             0% { 
                 box-shadow: 0 4px 20px rgba(52, 73, 94, 0.3) !important;
-                transform: translate(-50%, -50%) scale(1) !important;
+                transform: translateX(-50%) scale(1) !important;
             }
             50% { 
                 box-shadow: 0 8px 30px rgba(52, 73, 94, 0.5) !important;
-                transform: translate(-50%, -50%) scale(1.05) !important;
+                transform: translateX(-50%) scale(1.05) !important;
             }
             100% { 
                 box-shadow: 0 4px 20px rgba(52, 73, 94, 0.3) !important;
-                transform: translate(-50%, -50%) scale(1) !important;
+                transform: translateX(-50%) scale(1) !important;
             }
         }
 
@@ -138,102 +133,135 @@
             }
         }
         
-        /* Responsive design */
+        /* Tablet styles */
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
             }
             
             .intro-section h1 {
-                font-size: 28px;
+                font-size: 24px;
+                margin-bottom: 15px;
             }
             
             .intro-section p {
-                font-size: 16px;
-            }
-
-            .widget-area {
-                margin-top: 20px; /* Keep 20px spacing */
-                margin-bottom: 50px;
-                min-height: 180px; /* Slightly smaller for mobile */
-            }
-
-            /* Smaller button on mobile - keep it circular */
-            .vapi-btn {
-                width: 120px !important;
-                height: 120px !important;
-                border-radius: 50% !important;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .intro-section h1 {
-                font-size: 24px;
-            }
-            
-            .tips {
-                padding: 12px;
-                font-size: 14px;
-            }
-
-            .widget-area {
-                margin-top: 20px; /* Keep 20px spacing */
-                margin-bottom: 40px;
-                min-height: 160px; /* Adequate space for smaller button */
-            }
-
-            /* Even smaller button on very small screens - keep it circular */
-            .vapi-btn {
-                width: 100px !important;
-                height: 100px !important;
-                border-radius: 50% !important;
-            }
-        }
-
-        /* Handle very short screens (landscape mobile) */
-        @media (max-height: 600px) {
-            .widget-area {
-                margin-top: 20px; /* Keep 20px spacing */
-                margin-bottom: 30px;
-                min-height: 120px; /* Reduced space for landscape */
-            }
-
-            .intro-section {
-                margin-bottom: 0; /* No extra margin */
+                font-size: 15px;
+                margin-bottom: 12px;
             }
 
             .tips {
-                margin-bottom: 0; /* No extra margin */
+                font-size: 13px;
                 padding: 10px;
             }
 
-            /* Adjust button size for landscape mode */
+            .widget-area {
+                margin-top: 20px;
+                margin-bottom: 30px;
+                padding: 15px;
+                min-height: 150px; /* 120px button + 30px padding */
+            }
+
             .vapi-btn {
-                width: 80px !important;
-                height: 80px !important;
-                border-radius: 50% !important;
+                width: 120px !important;
+                height: 120px !important;
+                top: 15px !important;
             }
         }
 
-        /* Extra small screens */
-        @media (max-width: 320px) {
+        /* Mobile styles */
+        @media (max-width: 480px) {
+            .container {
+                padding: 12px;
+            }
+
+            .intro-section h1 {
+                font-size: 22px;
+                margin-bottom: 12px;
+            }
+            
+            .intro-section p {
+                font-size: 14px;
+                margin-bottom: 10px;
+            }
+            
+            .tips {
+                padding: 8px;
+                font-size: 12px;
+            }
+
             .widget-area {
-                margin-top: 20px; /* Keep 20px spacing */
-                min-height: 140px; /* Ensure adequate space */
+                margin-top: 20px;
+                margin-bottom: 25px;
+                padding: 10px;
+                min-height: 120px; /* 100px button + 20px padding */
+            }
+
+            .vapi-btn {
+                width: 100px !important;
+                height: 100px !important;
+                top: 10px !important;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 320px) {
+            .intro-section h1 {
+                font-size: 20px;
+            }
+
+            .intro-section p {
+                font-size: 13px;
+            }
+
+            .widget-area {
+                margin-top: 20px;
+                margin-bottom: 20px;
+                padding: 8px;
+                min-height: 106px; /* 90px button + 16px padding */
             }
 
             .vapi-btn {
                 width: 90px !important;
                 height: 90px !important;
-                border-radius: 50% !important;
+                top: 8px !important;
             }
         }
 
-        /* Very tall screens - ensure adequate bottom spacing */
-        @media (min-height: 900px) {
+        /* Landscape mobile - very short screens */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .intro-section h1 {
+                font-size: 18px;
+                margin-bottom: 8px;
+            }
+            
+            .intro-section p {
+                font-size: 12px;
+                margin-bottom: 6px;
+            }
+
+            .tips {
+                padding: 6px;
+                font-size: 11px;
+            }
+
             .widget-area {
-                margin-top: 20px; /* Keep 20px spacing */
-                margin-bottom: 80px; /* More bottom spacing on tall screens */
+                margin-top: 15px;
+                margin-bottom: 15px;
+                padding: 5px;
+                min-height: 90px; /* 80px button + 10px padding */
+            }
+
+            .vapi-btn {
+                width: 80px !important;
+                height: 80px !important;
+                top: 5px !important;
+            }
+        }
+
+        /* Ensure adequate spacing on very tall screens */
+        @media (min-height: 800px) {
+            .widget-area {
+                margin-bottom: 60px;
             }
         }
     </style>
