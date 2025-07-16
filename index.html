@@ -94,91 +94,47 @@
             text-align: center;
         }
 
-        /* Force pulsing animation with high specificity */
-        .vapi-btn,
-        [class*="vapi-btn"],
-        button[class*="vapi"] {
-            animation: force-pulse 2s infinite ease-in-out !important;
-            animation-fill-mode: both !important;
-            animation-play-state: running !important;
-        }
-
-        /* Super obvious pulsing animation */
-        @keyframes force-pulse {
-            0% {
-                transform: translate(-50%, -50%) scale(1) !important;
-                box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7) !important;
-                background-color: #34495e !important;
-                opacity: 0.8 !important;
-            }
-            50% {
-                transform: translate(-50%, -50%) scale(1.2) !important;
-                box-shadow: 0 0 0 20px rgba(52, 152, 219, 0) !important;
-                background-color: #3498db !important;
-                opacity: 1 !important;
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(1) !important;
-                box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7) !important;
-                background-color: #34495e !important;
-                opacity: 0.8 !important;
-            }
-        }
-
-        /* Red pulsing for active state */
-        @keyframes force-active-pulse {
-            0% {
-                transform: translate(-50%, -50%) scale(1) !important;
-                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7) !important;
-                background-color: #e74c3c !important;
-            }
-            50% {
-                transform: translate(-50%, -50%) scale(1.15) !important;
-                box-shadow: 0 0 0 15px rgba(231, 76, 60, 0) !important;
-                background-color: #c0392b !important;
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(1) !important;
-                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7) !important;
-                background-color: #e74c3c !important;
-            }
+        /* Optional: Additional styling for VAPI button states */
+        .vapi-btn {
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 20px rgba(52, 73, 94, 0.3) !important;
+            /* Override VAPI positioning to center in widget-area */
+            position: absolute !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            right: auto !important;
+            bottom: auto !important;
+            /* Ensure perfect circle on all screens */
+            border-radius: 50% !important;
+            aspect-ratio: 1 / 1 !important;
+            min-width: 0 !important;
+            min-height: 0 !important;
+            max-width: none !important;
+            max-height: none !important;
+            flex-shrink: 0 !important;
         }
 
         .vapi-btn-is-idle {
-            animation: dramatic-pulse 2s infinite ease-in-out !important;
+            animation: gentle-pulse 2s infinite ease-in-out !important;
         }
 
         .vapi-btn-is-active {
-            animation: active-pulse 1s infinite ease-in-out !important;
-            background-color: #e74c3c !important;
+            animation: active-pulse 1.5s infinite ease-in-out !important;
         }
 
-        .vapi-btn-is-loading {
-            animation: loading-pulse 0.8s infinite ease-in-out !important;
-            background-color: #f39c12 !important;
-        }
-
-        /* DRAMATIC pulsing animation - much more obvious */
-        @keyframes dramatic-pulse {
-            0% {
-                background-color: #34495e !important;
-                box-shadow: 0 0 0px rgba(52, 73, 94, 0.4) !important;
-                transform: translate(-50%, -50%) scale(1) !important;
-                opacity: 0.7 !important;
+        @keyframes gentle-pulse {
+            0% { 
+                box-shadow: 0 4px 20px rgba(52, 73, 94, 0.3) !important;
+                transform: scale(1) !important;
             }
-            50% {
-                background-color: #3498db !important;
-                box-shadow: 0 0 30px rgba(52, 152, 219, 0.8) !important,
-                           0 0 60px rgba(52, 152, 219, 0.6) !important,
-                           0 0 90px rgba(52, 152, 219, 0.4) !important;
-                transform: translate(-50%, -50%) scale(1.15) !important;
-                opacity: 1 !important;
+            50% { 
+                box-shadow: 0 8px 30px rgba(52, 73, 94, 0.5) !important;
+                transform: scale(1.05) !important;
             }
-            100% {
-                background-color: #34495e !important;
-                box-shadow: 0 0 0px rgba(52, 73, 94, 0.4) !important;
-                transform: translate(-50%, -50%) scale(1) !important;
-                opacity: 0.7 !important;
+            100% { 
+                box-shadow: 0 4px 20px rgba(52, 73, 94, 0.3) !important;
+                transform: scale(1) !important;
             }
         }
 
@@ -374,9 +330,6 @@
                     showStatus('Interview widget ready!', 2000);
                     console.log('✅ VAPI widget loaded with custom styling');
                     
-                    // Force pulsing animation with JavaScript
-                    setTimeout(forcePulsingAnimation, 1000);
-                    
                     // Optional: Listen to events
                     vapiInstance.on('call-start', () => {
                         showStatus('Interview started - speak clearly!');
@@ -390,30 +343,6 @@
                 }
             };
         })(document, "script");
-
-        // Force pulsing animation with JavaScript if CSS fails
-        function forcePulsingAnimation() {
-            setInterval(() => {
-                const buttons = document.querySelectorAll('.vapi-btn, [class*="vapi"], button');
-                buttons.forEach(button => {
-                    if (button && button.style !== undefined) {
-                        // Force the animation
-                        button.style.setProperty('animation', 'force-pulse 2s infinite ease-in-out', 'important');
-                        button.style.setProperty('animation-fill-mode', 'both', 'important');
-                        button.style.setProperty('animation-play-state', 'running', 'important');
-                        
-                        // Ensure positioning
-                        if (button.classList.contains('vapi-btn') || button.className.includes('vapi')) {
-                            button.style.setProperty('position', 'absolute', 'important');
-                            button.style.setProperty('top', '50%', 'important');
-                            button.style.setProperty('left', '50%', 'important');
-                            button.style.setProperty('transform', 'translate(-50%, -50%)', 'important');
-                            button.style.setProperty('border-radius', '50%', 'important');
-                        }
-                    }
-                });
-            }, 500);
-        }
     </script>
 </body>
 </html>
