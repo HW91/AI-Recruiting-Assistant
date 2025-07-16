@@ -105,6 +105,14 @@
             transform: translate(-50%, -50%) !important;
             right: auto !important;
             bottom: auto !important;
+            /* Ensure perfect circle on all screens */
+            border-radius: 50% !important;
+            aspect-ratio: 1 / 1 !important;
+            min-width: 0 !important;
+            min-height: 0 !important;
+            max-width: none !important;
+            max-height: none !important;
+            flex-shrink: 0 !important;
         }
 
         .vapi-btn-is-idle {
@@ -159,10 +167,11 @@
                 min-height: 120px;
             }
 
-            /* Smaller button on mobile */
+            /* Smaller button on mobile - keep it circular */
             .vapi-btn {
                 width: 120px !important;
                 height: 120px !important;
+                border-radius: 50% !important;
             }
         }
 
@@ -182,10 +191,11 @@
                 min-height: 100px;
             }
 
-            /* Even smaller button on very small screens */
+            /* Even smaller button on very small screens - keep it circular */
             .vapi-btn {
                 width: 100px !important;
                 height: 100px !important;
+                border-radius: 50% !important;
             }
         }
 
@@ -204,6 +214,22 @@
             .tips {
                 margin-bottom: 20px;
                 padding: 10px;
+            }
+
+            /* Adjust button size for landscape mode */
+            .vapi-btn {
+                width: 80px !important;
+                height: 80px !important;
+                border-radius: 50% !important;
+            }
+        }
+
+        /* Extra small screens */
+        @media (max-width: 320px) {
+            .vapi-btn {
+                width: 90px !important;
+                height: 90px !important;
+                border-radius: 50% !important;
             }
         }
     </style>
