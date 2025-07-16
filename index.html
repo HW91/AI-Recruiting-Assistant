@@ -94,10 +94,15 @@
             text-align: center;
         }
 
-        /* Force pulsing animation with high specificity */
+        /* MAXIMUM AGGRESSION - Target every possible VAPI selector */
         .vapi-btn,
         [class*="vapi-btn"],
-        button[class*="vapi"] {
+        [class*="vapi"],
+        button[class*="vapi"],
+        div[class*="vapi"] button,
+        * .vapi-btn,
+        html body .vapi-btn,
+        .vapi-btn.vapi-btn.vapi-btn {
             /* Keep our centering and shape */
             position: absolute !important;
             top: 50% !important;
@@ -112,33 +117,45 @@
             max-height: none !important;
             flex-shrink: 0 !important;
             
-            /* Add the beautiful pulsing animation from the first document */
-            animation: beautiful-pulse 2s infinite ease-in-out !important;
+            /* FORCE the animation with every trick possible */
+            animation: mega-pulse 2s infinite ease-in-out !important;
             animation-fill-mode: both !important;
             animation-play-state: running !important;
+            animation-delay: 0s !important;
+            animation-direction: normal !important;
+            animation-iteration-count: infinite !important;
+            animation-timing-function: ease-in-out !important;
+            animation-duration: 2s !important;
+            animation-name: mega-pulse !important;
         }
 
-        /* Beautiful pulsing animation - directly from the working version */
-        @keyframes beautiful-pulse {
+        /* MEGA aggressive pulsing - should override everything */
+        @keyframes mega-pulse {
             0% {
+                background: #34495e !important;
                 background-color: #34495e !important;
                 box-shadow: 0 0 10px rgba(52, 73, 94, 0.2) !important;
                 opacity: 0.8 !important;
                 transform: translate(-50%, -50%) scale(1) !important;
+                filter: brightness(1) !important;
             }
             50% {
+                background: #5dade2 !important;
                 background-color: #5dade2 !important;
                 box-shadow: 0 0 40px rgba(93, 173, 226, 0.9) !important, 
                            0 0 60px rgba(93, 173, 226, 0.6) !important,
                            0 0 80px rgba(93, 173, 226, 0.3) !important;
                 opacity: 1 !important;
                 transform: translate(-50%, -50%) scale(1.05) !important;
+                filter: brightness(1.2) !important;
             }
             100% {
+                background: #34495e !important;
                 background-color: #34495e !important;
                 box-shadow: 0 0 10px rgba(52, 73, 94, 0.2) !important;
                 opacity: 0.8 !important;
                 transform: translate(-50%, -50%) scale(1) !important;
+                filter: brightness(1) !important;
             }
         }
 
