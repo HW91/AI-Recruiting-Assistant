@@ -68,91 +68,88 @@
             position: relative;
         }
         
-        /* Position VAPI widget center but keep it functional */
-        vapi-widget {
+        /* VAPI Widget Styling - Aggressive override of SDK positioning */
+        vapi-widget,
+        vapi-widget *,
+        vapi-widget > *,
+        vapi-widget div,
+        vapi-widget button {
             position: fixed !important;
             top: 50% !important;
             left: 50% !important;
+            right: auto !important;
+            bottom: auto !important;
             transform: translate(-50%, -50%) !important;
             width: 144px !important;
             height: 144px !important;
             border-radius: 50% !important;
             z-index: 1000 !important;
-            /* Keep widget visible but make it blend in */
-            opacity: 0.01 !important; /* Nearly invisible but still functional */
         }
         
-        /* Custom visual overlay - no pointer events so clicks pass through */
-        .custom-interview-button {
+        /* Force override any SDK positioning classes */
+        vapi-widget[style*="position"],
+        vapi-widget[style*="bottom"],
+        vapi-widget[style*="right"] {
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            right: auto !important;
+            bottom: auto !important;
+            transform: translate(-50%, -50%) !important;
+        }
+        
+        /* Animation for the widget */
+        vapi-widget {
+            animation: pulse 2s infinite ease-in-out !important;
+        }
+        
+        /* Prominent pulsing animation */
+        @keyframes pulse {
+            0% {
+                background-color: #34495e !important;
+                box-shadow: 0 0 10px rgba(52, 73, 94, 0.2) !important;
+                opacity: 0.8 !important;
+                transform: translate(-50%, -50%) scale(1) !important;
+            }
+            50% {
+                background-color: #5dade2 !important;
+                box-shadow: 0 0 40px rgba(93, 173, 226, 0.9) !important, 
+                           0 0 60px rgba(93, 173, 226, 0.6) !important,
+                           0 0 80px rgba(93, 173, 226, 0.3) !important;
+                opacity: 1 !important;
+                transform: translate(-50%, -50%) scale(1.05) !important;
+            }
+            100% {
+                background-color: #34495e !important;
+                box-shadow: 0 0 10px rgba(52, 73, 94, 0.2) !important;
+                opacity: 0.8 !important;
+                transform: translate(-50%, -50%) scale(1) !important;
+            }
+        }
+        
+        /* Alternative approach - use CSS custom properties to override SDK */
+        :root {
+            --vapi-widget-position: fixed !important;
+            --vapi-widget-top: 50% !important;
+            --vapi-widget-left: 50% !important;
+            --vapi-widget-bottom: auto !important;
+            --vapi-widget-right: auto !important;
+        }
+        
+        /* Text overlay for the widget */
+        .widget-text-overlay {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 144px;
-            height: 144px;
-            border-radius: 50%;
-            background-color: #34495e;
             color: white;
-            border: none;
             font-family: Arial, sans-serif;
             font-size: 16px;
             font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             text-align: center;
-            z-index: 999; /* Below widget so clicks pass through */
-            animation: pulse 2s infinite ease-in-out;
-            pointer-events: none; /* Let clicks pass through to widget */
+            pointer-events: none;
+            z-index: 1001;
             user-select: none;
-        }
-        
-        /* Our beautiful pulsing animation */
-        @keyframes pulse {
-            0% {
-                background-color: #34495e;
-                box-shadow: 0 0 10px rgba(52, 73, 94, 0.2);
-                opacity: 0.8;
-            }
-            50% {
-                background-color: #5dade2;
-                box-shadow: 0 0 40px rgba(93, 173, 226, 0.9), 
-                           0 0 60px rgba(93, 173, 226, 0.6),
-                           0 0 80px rgba(93, 173, 226, 0.3);
-                opacity: 1;
-            }
-            100% {
-                background-color: #34495e;
-                box-shadow: 0 0 10px rgba(52, 73, 94, 0.2);
-                opacity: 0.8;
-            }
-        }
-        
-        /* Button states */
-        .custom-interview-button.connecting {
-            background-color: #f39c12;
-            animation: connecting-pulse 1s infinite ease-in-out;
-        }
-        
-        .custom-interview-button.active {
-            background-color: #e74c3c;
-            animation: active-pulse 1.5s infinite ease-in-out;
-        }
-        
-        @keyframes connecting-pulse {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 1; }
-        }
-        
-        @keyframes active-pulse {
-            0%, 100% { 
-                background-color: #e74c3c;
-                box-shadow: 0 0 20px rgba(231, 76, 60, 0.6);
-            }
-            50% { 
-                background-color: #c0392b;
-                box-shadow: 0 0 30px rgba(231, 76, 60, 0.9);
-            }
         }
         
         /* Remove custom overlay that might interfere */
@@ -250,7 +247,6 @@
         </div>
         
         <div class="widget-area">
-            <!-- Functional VAPI widget (nearly invisible but clickable) -->
             <vapi-widget 
                 assistant-id="35c7f5f0-a44c-4172-85da-1c05cc5e55e7" 
                 public-key="1f80cbcd-97fc-45ad-ba54-5eff014c5f4e"
@@ -258,10 +254,7 @@
                 theme="dark"
             ></vapi-widget>
             
-            <!-- Visual overlay (non-interactive, just for appearance) -->
-            <div class="custom-interview-button" id="customButton">
-                Click to talk
-            </div>
+            <div class="widget-text-overlay">Click to talk</div>
         </div>
     </div>
     
@@ -270,9 +263,8 @@
     <script src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js" async type="text/javascript"></script>
     
     <script>
-        // Simple approach: let real widget handle clicks, just monitor state
+        // Simple widget initialization - minimal interference
         console.log('AI Interview page loaded');
-        let isCallActive = false;
         
         function showStatus(message, duration = 3000) {
             const statusEl = document.getElementById('statusMessage');
@@ -285,85 +277,22 @@
             }
         }
         
-        function updateButtonVisual(text, state = 'default') {
-            const button = document.getElementById('customButton');
-            if (button) {
-                button.textContent = text;
-                button.className = 'custom-interview-button';
-                if (state !== 'default') {
-                    button.classList.add(state);
-                }
-            }
-        }
-        
-        function monitorWidgetState() {
-            const widget = document.querySelector('vapi-widget');
-            if (!widget) return;
-            
-            // Simple state monitoring - just watch for text changes
-            setInterval(() => {
-                const widgetText = widget.textContent || '';
-                const hasEndButton = widgetText.toLowerCase().includes('end') || 
-                                   widgetText.toLowerCase().includes('stop') ||
-                                   widgetText.toLowerCase().includes('hang up');
-                
-                if (hasEndButton && !isCallActive) {
-                    // Call started
-                    isCallActive = true;
-                    updateButtonVisual('End Interview', 'active');
-                    showStatus('Interview started - speak clearly!');
-                    console.log('✅ Call detected as active');
-                } else if (!hasEndButton && isCallActive) {
-                    // Call ended
-                    isCallActive = false;
-                    updateButtonVisual('Click to talk');
-                    showStatus('Interview ended');
-                    console.log('✅ Call detected as ended');
-                }
-            }, 500);
-            
-            // Also monitor DOM changes
-            const observer = new MutationObserver(() => {
-                const widgetText = widget.textContent || '';
-                const hasEndButton = widgetText.toLowerCase().includes('end') || 
-                                   widgetText.toLowerCase().includes('stop');
-                
-                if (hasEndButton && !isCallActive) {
-                    isCallActive = true;
-                    updateButtonVisual('End Interview', 'active');
-                    showStatus('Interview started - speak clearly!');
-                } else if (!hasEndButton && isCallActive && widgetText.toLowerCase().includes('start')) {
-                    isCallActive = false;
-                    updateButtonVisual('Click to talk');
-                    showStatus('Interview ended');
-                }
-            });
-            
-            observer.observe(widget, {
-                childList: true,
-                subtree: true,
-                characterData: true
-            });
-        }
-        
-        // Initialize - much simpler approach
+        // Wait for widget to load with minimal interference
         setTimeout(() => {
             const widget = document.querySelector('vapi-widget');
             if (widget) {
-                console.log('✅ VAPI widget found and functional');
+                console.log('✅ VAPI widget found');
+                widget.classList.add('loaded');
                 showStatus('Ready for your interview!', 2000);
-                
-                // Start monitoring widget state
-                monitorWidgetState();
-                
             } else {
                 console.log('❌ Widget not found, retrying...');
+                // Retry once more
                 setTimeout(() => {
                     const retryWidget = document.querySelector('vapi-widget');
                     if (retryWidget) {
                         console.log('✅ VAPI widget found on retry');
+                        retryWidget.classList.add('loaded');
                         showStatus('Ready for your interview!', 2000);
-                        monitorWidgetState();
                     } else {
                         console.log('❌ Widget failed to load');
                         showStatus('Please refresh the page if the interview button doesn\'t appear', 5000);
